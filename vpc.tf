@@ -76,6 +76,18 @@ resource "aws_subnet" "database" {
   )
 }
 
+resource "aws_db_subnet_group" "default" {
+  name       = "${local.Resource_Name}"
+  subnet_ids = aws_subnet.database[*].id
+
+  tags = merge(
+    var.common_tags,
+    var.database_subnet_group_tags,
+    {
+        Name = "${local.Resource_Name}"
+    }
+  )
+}
 # elastic ip 
 
 resource "aws_eip" "nat" {
